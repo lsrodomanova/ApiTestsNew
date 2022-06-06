@@ -1,6 +1,8 @@
 package lubl;
 
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
@@ -10,6 +12,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApiTests {
+
 
     String baseUrl = "https://reqres.in",
             singleUserUrl= "/api/users/2",
@@ -27,10 +30,14 @@ public class ApiTests {
             job="leader",
             errormassege="Missing password";
 
+    @BeforeAll
+    static void setUp() {
+        baseURI="https://reqres.in";}
+
 
     @Test
     public void getSingleUser() {
-        Response response = get(baseUrl+singleUserUrl)
+        Response response = get(singleUserUrl)
                 .then()
                 .statusCode(200)
                 .extract().response();
@@ -41,7 +48,7 @@ public class ApiTests {
     void userNotFound() {
         given()
                 .when()
-                .get(baseUrl+userNotFoundUrl)
+                .get(userNotFoundUrl)
                 .then()
                 .statusCode(404)
                 .body(is("{}"));
@@ -49,7 +56,7 @@ public class ApiTests {
 
     @Test
     public void getSingleResource() {
-        Response response = get(baseUrl+singleResourceUrl)
+        Response response = get(singleResourceUrl)
                 .then()
                 .statusCode(200)
                 .extract().response();
@@ -62,7 +69,7 @@ public class ApiTests {
                 .body(body)
                 .contentType(JSON)
                 .when()
-                .post(baseUrl+createUrl)
+                .post(createUrl)
                 .then()
                 .statusCode(201)
                 .body("name", is(name))
@@ -73,7 +80,7 @@ public class ApiTests {
     void deleteUser() {
         given()
                 .when()
-                .delete(baseUrl+deleteUrl)
+                .delete(deleteUrl)
                 .then()
                 .statusCode(204);
     }
@@ -84,7 +91,7 @@ public class ApiTests {
                 .body(body2)
                 .contentType(JSON)
                 .when()
-                .post(baseUrl+registerUrl)
+                .post(registerUrl)
                 .then()
                 .statusCode(400)
                 .body("error", is(errormassege));
