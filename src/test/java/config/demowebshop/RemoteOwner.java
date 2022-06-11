@@ -8,5 +8,6 @@ import org.aeonbits.owner.Config;
         "classpath:properties/remote.properties"
 })
 public interface RemoteOwner extends Config{
+
     String url();
 }

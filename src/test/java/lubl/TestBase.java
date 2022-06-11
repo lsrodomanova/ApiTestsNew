@@ -25,14 +25,15 @@ public class TestBase {
         Configuration.baseUrl = appConfig.webUrl();
         RestAssured.baseURI = appConfig.apiUrl();
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
-        RemoteOwner confRemote = ConfigFactory.create(RemoteOwner.class);
+        RemoteOwner remoteOwner = ConfigFactory.create(RemoteOwner.class);
 
         String propertyBrowserSize = System.getProperty("browserSize", "1980x1024"),
-                propertyRemoteUrl = System.getProperty("remoteUrl", confRemote.url());
+                propertyRemoteUrl = System.getProperty("remoteUrl", remoteOwner.url());
 
 
         Configuration.browserSize = propertyBrowserSize;
         Configuration.remote = propertyRemoteUrl;
+
     }
 
 
