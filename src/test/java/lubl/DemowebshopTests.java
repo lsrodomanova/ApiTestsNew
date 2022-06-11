@@ -23,8 +23,7 @@ public class DemowebshopTests extends TestBase {
     static CredentialsConfig credentialsConfig = ConfigFactory.create(CredentialsConfig.class);
     static String login = credentialsConfig.login(),
             password = credentialsConfig.password(),
-            authCookieName = credentialsConfig.authCookieName(),
-                    updateWish;
+            authCookieName = credentialsConfig.authCookieName();
     @BeforeAll
     static void setUp() {
         baseURI="http://demowebshop.tricentis.com";}
