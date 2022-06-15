@@ -12,9 +12,12 @@ import io.restassured.RestAssured;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.Selenide.open;
 
 
 public class TestBase {
@@ -23,13 +26,17 @@ public class TestBase {
     static void beforeAll() {
         AppConfig appConfig = ConfigFactory.create(AppConfig.class);
         Configuration.baseUrl = appConfig.webUrl();
-        RestAssured.baseURI = appConfig.apiUrl();
+        RestAssured.baseURI = appConfig.apiURI();
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
         RemoteOwner remoteOwner = ConfigFactory.create(RemoteOwner.class);
 
         String propertyBrowserSize = System.getProperty("browserSize", "1980x1024"),
                 propertyRemoteUrl = System.getProperty("remoteUrl", remoteOwner.url());
 
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("enableVNC", true);
+        capabilities.setCapability("enableVideo", true);
+        Configuration.browserCapabilities = capabilities;
 
         Configuration.browserSize = propertyBrowserSize;
         Configuration.remote = propertyRemoteUrl;

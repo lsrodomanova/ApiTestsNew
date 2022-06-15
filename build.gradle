@@ -38,9 +38,9 @@ dependencies {
     )
 }
 
-tasks.withType(Test) {
+    tasks.withType(Test) {
     systemProperties(System.getProperties())
-    useJUnitPlatform()
+    useJUnitPlatform()}
 
     if (System.getProperty("threads") != null) {
         systemProperties += [
@@ -51,4 +51,9 @@ tasks.withType(Test) {
                 'junit.jupiter.execution.parallel.config.fixed.parallelism': System.getProperty("threads").toInteger()
         ]
     }
+
+    task demowebshop(type: Test) {
+        useJUnitPlatform {
+            includeTags 'demowebshop'
+        }
 }

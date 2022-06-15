@@ -23,10 +23,7 @@ public class DemowebshopTests extends TestBase {
     static CredentialsConfig credentialsConfig = ConfigFactory.create(CredentialsConfig.class);
     static String login = credentialsConfig.login(),
             password = credentialsConfig.password(),
-            authCookieName = credentialsConfig.authCookieName();
-    @BeforeAll
-    static void setUp() {
-        baseURI="http://demowebshop.tricentis.com";}
+            authCookieName = "NOPCOMMERCE.AUTH";
 
     @Test
     @Tag("demowebshop")
@@ -45,7 +42,7 @@ public class DemowebshopTests extends TestBase {
                 $(".account").shouldHave(text(login)));
     }
 
-    @Test
+   @Test
     @Tag("demowebshop")
     @DisplayName("Successful authorization to some demowebshop (API + UI)")
     void loginWithApiTest() {
@@ -61,7 +58,7 @@ public class DemowebshopTests extends TestBase {
                     .post("/login")
                     .then()
                     .log().all()
-                    .statusCode(200)
+                    .statusCode(302)
                     .extract().cookie(authCookieName);
 
             step("Open minimal content, because cookie can be set when site is opened", () ->
@@ -93,7 +90,7 @@ public class DemowebshopTests extends TestBase {
                     .post("/login")
                     .then()
                     .log().all()
-                    .statusCode(200)
+                    .statusCode(302)
                     .extract().cookie(authCookieName);
 
             step("Open minimal content, because cookie can be set when site is opened", () ->
@@ -125,7 +122,7 @@ public class DemowebshopTests extends TestBase {
                     .post("/login")
                     .then()
                     .log().all()
-                    .statusCode(200)
+                    .statusCode(302)
                     .extract().cookie(authCookieName);
 
             step("Open minimal content, because cookie can be set when site is opened", () ->
