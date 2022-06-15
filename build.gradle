@@ -38,22 +38,27 @@ dependencies {
     )
 }
 
-    tasks.withType(Test) {
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+tasks.withType(Test) {
     systemProperties(System.getProperties())
-    useJUnitPlatform()}
+    useJUnitPlatform()
 
-    if (System.getProperty("threads") != null) {
-        systemProperties += [
-                'junit.jupiter.execution.parallel.enabled'                 : true,
-                'junit.jupiter.execution.parallel.mode.default'            : 'concurrent',
-                'junit.jupiter.execution.parallel.mode.classes.default'    : 'concurrent',
-                'junit.jupiter.execution.parallel.config.strategy'         : 'fixed',
-                'junit.jupiter.execution.parallel.config.fixed.parallelism': System.getProperty("threads").toInteger()
-        ]
-    }
-
-    task demowebshop(type: Test) {
-        useJUnitPlatform {
-            includeTags 'demowebshop'
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
         }
+    }
+}
+task demowebshop_tests (type: Test) {
+    useJUnitPlatform {
+        includeTags "demowebshop"
+    }
 }
